@@ -1,0 +1,20 @@
+.errorlist {
+    background: rgba(255, 255, 255, 0.8);
+    color: rgb(150, 52, 49);
+    list-style-type: none;
+    margin: 0 -5px;
+    padding: 5px;
+}
+
+.errorlist + p {
+    background: rgba(255, 255, 255, 0.8);
+    margin-top: 0;
+    margin-left: -5px;
+    margin-right: -5px;
+    padding: 5px;
+}
+
+.helptext {
+    color: #999;
+    font-size: .85em;
+}
