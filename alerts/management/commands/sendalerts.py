@@ -1,4 +1,5 @@
 #django documentation said to put this file in management/commands... 
+# it's formatted as a command like this so that heroku can run it every 10 minutes. 
 
 #imports classes from django
 from django.core.management.base import BaseCommand, CommandError
