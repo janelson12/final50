@@ -1,7 +1,7 @@
 Overview:
 =========
 
-I decided to use Django because that's what The Crimson uses internally to power <thecrimson.com> and I hope one day to integrate my project with thecrimson.com. They said it would be easiest if I used the same framework. I had to learn Python and all these new APIs which was hard, but Django has great documentation and makes lots of design decisions for you and it's 1000x easier than C so it ended up being worth it.
+I decided to use Django because that's what The Crimson uses internally to power <http://thecrimson.com> and I hope one day to integrate my project with thecrimson.com. They said it would be easiest if I used the same framework. I had to learn Python and all these new APIs which was hard, but Django has great documentation and makes lots of design decisions for you and it's 1000x easier than C so it ended up being worth it.
 
 
 Code location:
