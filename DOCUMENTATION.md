@@ -32,10 +32,11 @@ Installation:
 NOTE: These instructions adapted from internal Crimson instructions for thecrimson.com.
 
 Software requirements:
-    * Python 2.7
-    * pip (Python package installer)
-    * A bunch of Python packages listed in requirements.txt
-    * MySQL
+
+* Python 2.7
+* pip (Python package installer)
+* A bunch of Python packages listed in requirements.txt
+* MySQL
     
 The Crimson recommended installing Python on Mac OS with Homebrew (http://brew.sh) since the default version installed on Mac doesn't have pip. Then you can just install all the required Python packages with
 
