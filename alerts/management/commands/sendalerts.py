@@ -1,8 +1,13 @@
+#django documentation said to put this file in management/commands... 
+
+#imports classes from django
 from django.core.management.base import BaseCommand, CommandError
 
+#imports send_sms function and News/Subscriber models
 from alerts.sms import send_sms
 from alerts.models import News, Subscriber
 
+# creates command for sending alerts
 class Command(BaseCommand):
     help = 'Sends alerts for all new news to subscribers'
 
