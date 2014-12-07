@@ -2,11 +2,6 @@ import os
 
 import dj_database_url
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-import os
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
@@ -17,6 +12,10 @@ SECRET_KEY = 'kkmpxj+n+0hs6%@@4&b!+p9!lfrht=$z*la4^b&w-z8(nc+05#'
 DEBUG = True
 
 TEMPLATE_DEBUG = True
+
+TEMPLATE_DIRS = (
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'templates'),
+)
 
 ALLOWED_HOSTS = ['*']
 
@@ -82,5 +81,3 @@ TWILIO_AUTH_TOKEN = os.environ['TWILIO_AUTH_TOKEN']
 STATICFILES_DIRS = (
     os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'static'),
 )
-
-# STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'

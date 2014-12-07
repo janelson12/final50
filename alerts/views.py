@@ -5,11 +5,12 @@ from phonenumbers import format_number
 from phonenumbers.phonenumberutil import NumberParseException
 
 from django.http import HttpResponse, HttpResponseBadRequest
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 
 from alerts.forms import SubscriberForm, UserForm
 from alerts.models import Subscriber
+from alerts.sms import send_sms
 
 def signup(request):
     if request.method == 'POST':
@@ -23,31 +24,18 @@ def signup(request):
             subscriber = subscriber_form.save(commit=False)
             subscriber.user = user
             subscriber.save()
+
+            send_sms(subscriber.cell_phone, ("Welcome to Crimson Alerts! "
+                "Text STOP to unsubscribe."))
+            return redirect('success')
     else:
         forms = (UserForm(), SubscriberForm(),)
 
     return render(request, 'alerts/signup.html', {'forms': forms})
 
+
 @csrf_exempt
 def receive_sms(request):
     response = twilio.twiml.Response()
-
-    number_string = request.POST.get('From')
-    if not number_string:
-        return HttpResponseBadRequest("no number specified\n")
-
-    try:
-        number = phonenumbers.parse(number_string)
-    except NumberParseException:
-        return HttpResponseBadRequest("bad phone number\n")
-
-    formatted_number = format_number(number, phonenumbers.PhoneNumber())
-
-
-    try:
-        subscriber = Subscriber.objects.get(cell_phone=formatted_number)
-        response.message('Text STOP to unsubscribe')
-    except Subscriber.DoesNotExist:
-        response.message('You are not subscribed!')
-
+    response.message("Text STOP to unsubscribe or HELP for more options")
     return HttpResponse(response)

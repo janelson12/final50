@@ -1,37 +1,13 @@
-<!DOCTYPE html>
+{% extends "__base.html" %}
 
-<html lang="en">
-<head>
-    <title>Crimson Alerts: Breaking Harvard News Alerts</title>
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% for form in forms %}
+            {{ form.as_p }}
+        {% endfor %}
 
-    <link rel="stylesheet" href="/static/css/base.css" />
-    <link rel="stylesheet" href="/static/css/fonts.css" />
-    <link rel="stylesheet" href="/static/css/interstitial.css">
-<body>
-    <div id="interstitial-inline">
-        <div id="interstitial-spiel">
-            <h1>Get text alerts.</h1>
-            <p>Sign up for alerts, sent straight to your mobile phone.</p>
-        </div>
-
-        <section id="interstitial-form">
-            <form method="post">
-                {% csrf_token %}
-
-                {% for form in forms %}
-                    {{ form.as_p }}
-                {% endfor %}
-
-                <input type="submit" value="Sign up!">
-            </form>
-        </section>
-
-        <div id="interstitial-inline-footer">
-            <a href="http://www.thecrimson.com">&copy; The Harvard Crimson &middot; 14 Plympton Street &middot; Cambridge, MA 02138</a>
-        </div>
-    </body>
-</html>
+        <input type="submit" value="Sign up!">
+    </form>
+{% endblock %}
