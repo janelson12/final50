@@ -1,4 +1,5 @@
 """
+django made this for me... :) Don't totally get it :) 
 WSGI config for final50 project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
