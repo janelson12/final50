@@ -1,0 +1,45 @@
+Overview:
+=========
+
+I decided to use Django because that's what The Crimson uses internally to power <http://thecrimson.com> and I want to integrate my project with thecrimson.com. They said it would be easiest if I used the same framework. I had to figure out Python and all these new APIs which was hard, but Django has great documentation and makes lots of design decisions for you.
+
+
+code location:
+==============
+
+The first big decision was where to put the code. The Crimson said to keep it to one "app" so that it could be easily integrated in the future, but also to create a separate "project" for the CS50 Fair for demo purposes. So I created a "final50" *project* automatically with Django's template (`./manage.py startproject final50`), and then created an "alerts" *app* that could be eventually integrated with thecrimson.com with `./manage.py startapp alerts`. So the bulk of the (python) code is in the `alerts/` app directory and only stuff needed to get this thing running on my machine and Heroku is in the rest of the project.
+
+Then I followed Heroku's guide on serving static files like CSS and and images: <https://devcenter.heroku.com/articles/django-assets>. So I created a static folder in the project base for css and images, which I neatly separated into separate directories. (I didn't use any javascript yet.)
+
+alerts app:
+===========
+
+The Django tutorial was super helpful in determining Django conventions about where to put code: https://docs.djangoproject.com/en/1.7/intro/tutorial01/. Basically I broke the app into three layers: the data layer which handles saving and retriving stuff from the database, the web server layer which handles users signing up via a web browser and twilio notifying me when a text is received, and the notification layer which sends out news alerts to everyone signed up.
+
+database stuff:
+==============
+
+The database layer is all in models.py. Django made it super easy to create database tables. I didn't have to write any SQL! Just Python code that declared the model and the type of each field, which correspond to tables and columns in the database.
+
+I created two separate models: one to keep track of all the users who subscribe and their cell phones, along with some demographic information (that I thought would be helpful to The Crimson's Circulation team), and one to keep track of all the news, and whether or not the notification for that news item had been sent out. Django comes in with built-in user registration, so I just followed the instructions (https://docs.djangoproject.com/en/1.7/topics/auth/customizing/#extending-the-existing-user-model) for linking each subscriber to a user account with a username, email, and password. 
+
+web server:
+===========
+
+The web server responds to HTTP requests by using the models to talk to the database. Each URL is handled by one Python function per django convention. These URL handlers are stored in views.py, and the mapping from URLs to views is stored in final50/urls.py. These functions usually render HTML templates stored in the "templates" directory, but sometimes they use the Twilio client to construct a response in "TwiML" (Twilio Markup Language or something) instead. Either way they take a HTTP request and craft and return an HTTP response.
+
+Rather than have to hardcode HTML `<form>`s I used django's built-in facility for converting a model to an HTML form. I stored the code for this in forms.py and imported it in views.py where necessary.
+
+notification sender:
+===================
+
+To automatically send text alerts I created a special manage.py command. You can run it directly with `./manage.py sendalerts`. This runs the script in `alerts/managements/commands/sendalerts.py`. This way Heroku can automatically send out alerts every 10m with the Heroku Scheduler addon.
+
+This script is able to use the same models in the data layer as the webserver. It simply looks for any new breaking news that might have been added in admin and sends it to all currently subscribed users using the Twilio API. This makes it really easy to automatically get breaking news from the site in the future, because a separate script could just scrape thecrimson.com and save the new news in the News table and the notification sender would automatically send it out.
+
+random:
+======
+
+I extracted the code to send an SMS with Twilio into a send_sms function in sms.py because it was used by both the web server and notification sender layers. 
+
+There is also some django-specific stuff in admin.py so that Subscribers and News show up in the defaultadmin interface.
